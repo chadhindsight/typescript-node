@@ -1,5 +1,5 @@
 import express, { Application, Request, Response, NextFunction } from "express";
-import { Person, getNextIdFromCollection } from "./idHelpder";
+import { Person, idHelper } from "./idHelpder";
 
 const PORT = 4000;
 
@@ -64,7 +64,7 @@ app.put("/:id", (req, res) => {
 app.post("/", (req: Request, res: Response) => {
     const newEntry = {
         ...req.body,
-        id: getNextIdFromCollection(data)
+        id: idHelper(data)
     }
     data.push(newEntry);
     // Respond with the new entry
