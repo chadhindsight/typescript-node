@@ -1,5 +1,5 @@
 import express, { Application, Request, Response, NextFunction } from "express";
-import { Person, getNextIdFromCollection } from "../idHelpder";
+import { Person, getNextIdFromCollection } from "./idHelpder";
 
 const PORT = 4000;
 
@@ -61,11 +61,26 @@ app.put("/:id", (req, res) => {
 })
 
 // create a new entry
-app.post("/", (req, res) => {
+app.post("/", (req: Request, res: Response) => {
     const newEntry = {
         ...req.body,
         id: getNextIdFromCollection(data)
     }
-}
+    data.push(newEntry);
+    // Respond with the new entry
+    res.send(newEntry)
+
+})
+
+// Delete entry
+app.delete("/:id", (req, res) => {
+    // Get ID, find index
+    const personID = parseInt(req.params.id, 10);
+    const personIndex = data.findIndex(person => person.id === personID);
+
+    data.splice(personIndex, 1);
+    // Message send
+    res.send({ message: "Person Deleted Successfully!" });
+})
 
 app.listen(PORT, () => console.log(`Server bussin on port ${PORT}`));
