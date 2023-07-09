@@ -1,9 +1,10 @@
 import express, { Application, Request, Response, NextFunction } from "express";
+import { Person, getNextIdFromCollection } from "../idHelpder";
 
 const PORT = 4000;
 
 // Dummy data
-const data = [
+const data: Person[] = [
     {
         name: "Marc",
         age: 45,
@@ -58,5 +59,13 @@ app.put("/:id", (req, res) => {
     data[personIndex] = newPerson;
     res.send(newPerson);
 })
+
+// create a new entry
+app.post("/", (req, res) => {
+    const newEntry = {
+        ...req.body,
+        id: getNextIdFromCollection(data)
+    }
+}
 
 app.listen(PORT, () => console.log(`Server bussin on port ${PORT}`));
